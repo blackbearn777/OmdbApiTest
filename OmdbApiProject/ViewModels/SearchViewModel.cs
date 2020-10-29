@@ -58,6 +58,7 @@ namespace OmdbApiProject.ViewModels
 
         private async void Search()
         {
+            StateContext.ItemMovieResponses.Clear();
             if (!string.IsNullOrEmpty(InputSearch))
             {
                 var responseMovie = await _apiService.GetMovieBySearch(InputSearch.ToLower());

@@ -12,7 +12,12 @@
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
-            <Button Command="{Binding GoToSearch }"  Content="Go to search" Width="300" Height="50" HorizontalAlignment="Left"  />
+            <Border>
+                <Border.BitmapEffect>
+                    <DropShadowBitmapEffect/>
+                </Border.BitmapEffect>
+                <Button Margin="20 0 0 0" Command="{Binding GoToSearch }"   Content="Go to search" Width="200" Height="50" HorizontalAlignment="Left"  />
+            </Border>
         </Grid>
         <Grid Grid.Row="1">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -25,27 +30,29 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-
-                            <Grid>
-                                <Rectangle Margin="10" 
-                                       Height="250"
-                                       Width="150"
-                                       Fill="White">
-                                </Rectangle>
+                            <Border>
+                                <Border.BitmapEffect>
+                                    <DropShadowBitmapEffect/>
+                                </Border.BitmapEffect>
+                                <Grid >
+                                
+                                
                                 <Grid Margin="10">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                         <RowDefinition Height="1*"/>
                                     </Grid.RowDefinitions>
-
-                                    <Image Grid.Row="0"  Height="150" Width="100" Source="{Binding Poster}" >
-
-                                    </Image>
-
-                                    <TextBlock Grid.Row="1"
-                                               TextWrapping="Wrap"
-                                               Margin="5"
+                                    <Image Grid.Row="0"  Height="250" Width="200" Source="{Binding Poster}"/>
+                                    <TextBlock
+                                               TextAlignment="Center" 
+                                               HorizontalAlignment="Center" 
+                                               VerticalAlignment="Center"
+                                               Grid.Row="1"
+                                               FontSize="16"
+                                               Width="200"
+                                               TextWrapping="WrapWithOverflow"
+                                               Margin="5 10 5 5"
                                                Text="{Binding Title}">
                                     </TextBlock>
 
@@ -58,6 +65,7 @@
 
                                 </Grid>
                             </Grid>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

@@ -34,7 +34,7 @@ namespace OmdbApiProject
         {
             CanExecuteChanged(this, EventArgs.Empty);
         }
-        #region ICommand Members
+       
 
         bool ICommand.CanExecute(object parameter)
         {
@@ -100,3 +100,4 @@ namespace OmdbApiProject
         }
     }
 }
+ 

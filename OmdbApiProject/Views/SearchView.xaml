@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OmdbApiProject.Views"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+            >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
@@ -16,14 +17,14 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Text="{Binding InputSearch}" Grid.Column="0" Height="50" Margin="30 20 30 20" ></TextBox>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="20">
-                <Button Command="{Binding SearchCommand}" Content="Search" Width="70" Margin="5" Height="40"/>
-                <Button Command="{Binding GoToFavouriteCommand}" Content="Go to Favourite" Width="100" Margin="5" Height="40"/>
+            <TextBox Text="{Binding InputSearch}" Grid.Column="0" Height="50" FontSize="24" materialDesign:HintAssist.Hint="Enter film title"  Margin="30 20 30 20" ></TextBox>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="20 0 30 0">
+                <Button Command="{Binding SearchCommand}" Content="Search" Width="100" Margin="5" Height="40"/>
+                <Button Command="{Binding GoToFavouriteCommand}" Content="Go to Favourite" Width="150" Margin="5" Height="40"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" Margin="20">
-            <DataGrid FontSize="14"
+            <DataGrid FontSize="24"
                           Margin="10"
                           IsReadOnly="True"
                           VerticalAlignment="Stretch" 
@@ -48,20 +49,27 @@
                 </DataGrid.RowStyle>
 
                 <DataGrid.Columns >
-                    <DataGridTextColumn Header="Title" Width="*"  Binding="{Binding Title}" />
-                    <DataGridTextColumn Header="Year" Width="*"  Binding="{Binding Year }"/>
-                    <DataGridTextColumn Header="ImdbId" Width="*"  Binding="{Binding imdbID}" />
-                    <DataGridTextColumn Header="Type" Width="*"  Binding="{Binding Type}"/>
-                    <DataGridTemplateColumn Header="Add to favourite" Width="*">
+                    <DataGridTemplateColumn Width="2*" Header="Title">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Title}"></TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                   
+                    <DataGridTextColumn Header="Year" Width="1*"  Binding="{Binding Year }"/>
+                    <DataGridTextColumn Header="ImdbId" Width="1*"  Binding="{Binding imdbID}" />
+                    <DataGridTextColumn Header="Type" Width="1*"  Binding="{Binding Type}"/>
+                    <DataGridTemplateColumn Header="Poster" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                                    <Image Height="50" Width="50" Source="{Binding Poster}"  />
+                                    <Image Height="200" Width="150" Source="{Binding Poster}"  />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Add to favourite" Width="*">
+                    <DataGridTemplateColumn Header="Add to favourite" Width="1*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Stretch">
