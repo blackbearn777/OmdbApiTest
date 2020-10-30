@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace OmdbApiProject
 {
-    public class RelayCommands :ICommand
+    public class RelayCommands : ICommand
     {
-        Action _TargetExecuteMethod;
-
-        Func<bool> _TargetCanExecuteMethod;
+        private Func<bool> _TargetCanExecuteMethod;
+        private Action _TargetExecuteMethod;
         private object loaded;
 
         public RelayCommands(Action executeMethod)
@@ -30,11 +25,7 @@ namespace OmdbApiProject
             this.loaded = loaded;
         }
 
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged(this, EventArgs.Empty);
-        }
-       
+        public event EventHandler CanExecuteChanged = delegate { };
 
         bool ICommand.CanExecute(object parameter)
         {
@@ -49,19 +40,21 @@ namespace OmdbApiProject
             return false;
         }
 
-        public event EventHandler CanExecuteChanged = delegate { };
-
         void ICommand.Execute(object parameter)
         {
             _TargetExecuteMethod?.Invoke();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
         }
     }
 
     public class RelayCommands<T> : ICommand
     {
-        Action<T> _TargetExecuteMethod;
-        Func<T, bool> _TargetCanExecuteMethod;
-
+        private Func<T, bool> _TargetCanExecuteMethod;
+        private Action<T> _TargetExecuteMethod;
         public RelayCommands(Action<T> executeMethod)
         {
             _TargetExecuteMethod = executeMethod;
@@ -73,10 +66,7 @@ namespace OmdbApiProject
             _TargetCanExecuteMethod = canExecuteMethod;
         }
 
-        public void RaiseCanExecuteChanged()
-        {
-            CanExecuteChanged(this, EventArgs.Empty);
-        }
+        public event EventHandler CanExecuteChanged = delegate { };
 
         bool ICommand.CanExecute(object parameter)
         {
@@ -92,12 +82,14 @@ namespace OmdbApiProject
             return false;
         }
 
-        public event EventHandler CanExecuteChanged = delegate { };
-
         void ICommand.Execute(object parameter)
         {
             _TargetExecuteMethod?.Invoke((T)parameter);
         }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged(this, EventArgs.Empty);
+        }
     }
 }
- 

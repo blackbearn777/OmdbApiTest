@@ -2,7 +2,6 @@
 using OmdbApiProject.Entities;
 using OmdbApiProject.Interfaces;
 using OmdbApiProject.Models;
-using OmdbApiProject.Services;
 using OmdbApiProject.Views;
 using System;
 using System.Collections.ObjectModel;
@@ -13,16 +12,7 @@ namespace OmdbApiProject.ViewModels
 {
     public class FavouritesViewModel : ObservableObject, IState
     {
-        public UserControl CurrentStateControl { get; set; }
-        public StateContext StateContext { get; set; }
-        public Action<IState> ChangeState { get; set; }
-        public MovieRepository MovieRepository { get; set; }
-        public RelayCommands GoToSearch { get; set; }
-        public RelayCommands<int> DeleteFavouriteItem { get; set; }
-        public ObservableCollection<Movie> FavouriteMovie { get; set; }
-        public SearchViewModel SearchViewModel { get; set; }
-
-        public FavouritesViewModel(FavouritesView favouritesView, StateContext stateContext,  MovieRepository movieRepository)
+        public FavouritesViewModel(FavouritesView favouritesView, StateContext stateContext, MovieRepository movieRepository)
         {
             CurrentStateControl = favouritesView;
             MovieRepository = movieRepository;
@@ -32,6 +22,19 @@ namespace OmdbApiProject.ViewModels
             GoToSearch = new RelayCommands(GoToSearchUserControl);
             DeleteFavouriteItem = new RelayCommands<int>(DeleteFavourite);
             FavouriteMovie = StateContext.FavouritesMovies;
+        }
+
+        public Action<IState> ChangeState { get; set; }
+        public UserControl CurrentStateControl { get; set; }
+        public RelayCommands<int> DeleteFavouriteItem { get; set; }
+        public ObservableCollection<Movie> FavouriteMovie { get; set; }
+        public RelayCommands GoToSearch { get; set; }
+        public SearchViewModel SearchViewModel { get; set; }
+        public StateContext StateContext { get; set; }
+        private MovieRepository MovieRepository { get; set; }
+        public void GoToSearchUserControl()
+        {
+            ChangeState.Invoke(SearchViewModel);
         }
 
         private async void DeleteFavourite(int id)
@@ -44,12 +47,5 @@ namespace OmdbApiProject.ViewModels
                 FavouriteMovie.Remove(selectedItem);
             }
         }
-
-        public void GoToSearchUserControl()
-        {
-            ChangeState.Invoke(SearchViewModel);
-        }
     }
 }
-    
-

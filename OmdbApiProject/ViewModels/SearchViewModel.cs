@@ -10,22 +10,11 @@ using System.Windows.Controls;
 
 namespace OmdbApiProject.ViewModels
 {
-    public class SearchViewModel: ObservableObject, IState
+    public class SearchViewModel : ObservableObject, IState
     {
-        public UserControl CurrentStateControl { get; set; }
-        public StateContext StateContext { get; set; }
-        public Action<IState> ChangeState { get; set; }
-        public MovieRepository MoviesRepository { get; set; }
-        public RelayCommands GoToFavouriteCommand{ get; set; }
-        public RelayCommands SearchCommand { get; set; }
-        public RelayCommands AddToFavouriteCommand { get; set; }
-        public ItemMovieResponse SelectedItemMovie { get; set; }
-        public string InputSearch { get; set; }
-        public FavouritesViewModel FavouritesViewModel { get; set; }
-
         private ApiService _apiService;
 
-        public SearchViewModel(ApiService apiService,MovieRepository movieRepository, StateContext stateContext, SearchView searchView)
+        public SearchViewModel(ApiService apiService, MovieRepository movieRepository, StateContext stateContext, SearchView searchView)
         {
             CurrentStateControl = searchView;
             CurrentStateControl.DataContext = this;
@@ -39,8 +28,25 @@ namespace OmdbApiProject.ViewModels
 
             var t = MoviesRepository.GetMovies();
             t.ToList().ForEach(e => StateContext.Movies.Add(e));
-
         }
+
+        public RelayCommands AddToFavouriteCommand { get; set; }
+        public Action<IState> ChangeState { get; set; }
+        public UserControl CurrentStateControl { get; set; }
+        public FavouritesViewModel FavouritesViewModel { get; set; }
+        public RelayCommands GoToFavouriteCommand { get; set; }
+        public string InputSearch { get; set; }
+        public RelayCommands SearchCommand { get; set; }
+        public ItemMovieResponse SelectedItemMovie { get; set; }
+        public StateContext StateContext { get; set; }
+        private MovieRepository MoviesRepository { get; set; }
+
+        public void GoToFavourite()
+        {
+            StateContext.UpdateFavourites();
+            ChangeState.Invoke(FavouritesViewModel);
+        }
+
         private async void AddToFavourite()
         {
             var responseMovie = await _apiService.GetMovieById(SelectedItemMovie.imdbID);
@@ -66,12 +72,6 @@ namespace OmdbApiProject.ViewModels
                 InputSearch = "";
                 RaisePropertyChanged(nameof(InputSearch));
             }
-        }
-
-        public void GoToFavourite()
-        {
-            StateContext.UpdateFavourites();
-            ChangeState.Invoke(FavouritesViewModel);
         }
     }
 }

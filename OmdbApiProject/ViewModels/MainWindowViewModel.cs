@@ -1,29 +1,14 @@
 ﻿using GalaSoft.MvvmLight;
-using OmdbApiProject.Data;
 using OmdbApiProject.Interfaces;
-using OmdbApiProject.Models;
-using OmdbApiProject.Services;
-using OmdbApiProject.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace OmdbApiProject.ViewModels
 {
     public class MainWindowViewModel : ObservableObject
     {
-        public IState CurrentState { get; set; }
-        private UIElementCollection Scen { get; set; }
-        public RelayCommands<UIElementCollection> GetChildrenCommand { get; set; }
-        private Action<IState> ChangeState { get; set; }
-
-
         public MainWindowViewModel(SearchViewModel searchViewModel, FavouritesViewModel favouritesViewModel)
         {
-
             CurrentState = searchViewModel;
 
             GetChildrenCommand = new RelayCommands<UIElementCollection>(child =>
@@ -33,7 +18,6 @@ namespace OmdbApiProject.ViewModels
                 Scen.Add(CurrentState.CurrentStateControl);
             });
 
-
             ChangeState = SetNewScen;
             searchViewModel.ChangeState = ChangeState;
             favouritesViewModel.ChangeState = ChangeState;
@@ -41,6 +25,10 @@ namespace OmdbApiProject.ViewModels
             favouritesViewModel.SearchViewModel = searchViewModel;
         }
 
+        public IState CurrentState { get; set; }
+        public RelayCommands<UIElementCollection> GetChildrenCommand { get; set; }
+        private Action<IState> ChangeState { get; set; }
+        private UIElementCollection Scen { get; set; }
         private void SetNewScen(IState newState)
         {
             CurrentState = newState;
